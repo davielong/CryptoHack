@@ -28,7 +28,7 @@ print(readline())
 
 
 request = {
-    "buy": "clothes"
+    "buy": "flag"
 }
 json_send(request)
 
