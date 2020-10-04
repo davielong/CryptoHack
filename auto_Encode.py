@@ -1,3 +1,9 @@
+#This programme is hanging and needs to fixed 
+#Better exit needed and clean up
+#Comments to be added
+#
+#
+
 import json
 import base64
 import socket
