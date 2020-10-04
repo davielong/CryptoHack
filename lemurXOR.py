@@ -2,8 +2,6 @@
 #alse see geeksforkeeks.org 
 
 import cv2 # pip upgrade then pip install opencv
-import numpy as np
-
 
 #creating Image obj 1
 flagImage = cv2.imread("/home/b00131083/college/Secure-Communications/CryptoHack/flag_7ae18c704272532658c10b5faad06d74.png")
