@@ -1,0 +1,20 @@
+to solve this challenge we simply need to look at the python file. 
+telnetlib_example.py
+
+we know that the socket is  socket.cryptohack.org 
+and that we want to connect on port  11112. 
+and we know we are looking to buy a flag.
+
+look at line 30 of the file provided 
+ request = {
+    "buy": "clothes"
+}
+json_send(request)
+
+response = json_recv()
+
+print(response)
+
+
+we need to change the "clothes" value to be flag as we a shopping for flags
+flag = crypto{sh0pp1ng_f0r_fl4g5}
