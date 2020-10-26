@@ -1,57 +1,46 @@
-#This programme is hanging and needs to fixed 
-#Better exit needed and clean up
-#Comments to be added
-#
-#
-
+# V2 try to make it a bit less messy 
+from pwn import * # pip install pwntools
 import json
-import base64
-import socket
 import codecs
-import crypto
-import random
+import base64
+import Crypto
 
-# set host and port 
-host = "socket.cryptohack.org"
-port = 13377
+# create socket
+r = remote("socket.cryptohack.org", 13377, level = "debug")
 
-#create socket setup
-def netcat(hostname, port, message):
-    soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    soc.connect(hostname, port)
-    soc.sendall(message)
-    soc.shutdown(socket.SHUT_WR)
-#run socket in loop
-    while 1:
-        data = soc.recv(1024)
-        if data =="":
-            break
-    soc.close()
+# define receive function for json
+def json_recv():
+    line = r.recvline()
+    return json.loads(line.decode())
 
-soc = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-soc.connect((host, port))
+# define send function for json
+def json_send(hsh):
+    request = json.dumps(hsh).encode()
+    r.sendline(request)
 
-while 1:
-    data = json.loads(soc.recv(1024))
-    if 'flag' in data:
-        print(data['flag'])
-    encoding = data['type']
-    print(encoding)
+#run loop for 100 rounds
+for c in range(101):
 
-    if encoding == "base64":
-        encoded = bytes.decode(base64.b64decode(data['encoded']))
-    elif encoding == "bigint":
-        encoded = bytearray.fromhex(data['encoded'][2:]).decode()
-        print(encoded)
-    elif encoding == "rot13":
-        encoded = codecs.decode(data['encoded'], 'rot13')
-        pass
-    elif encoding == "hex":
-        encoded = bytearray.fromhex(data['encoded']).decode()
-    elif encoding == "utf-8":
-        encoded = bytes.decode(bytes(''.join([chr(i) for i in data['encoded']]), "UTF-8"))
+    received = json_recv()
+    encoding = received["type"]
+    print(received)
 
+    if "flag" in received:
+        print(received["flag"])
+    if received["type"] == "base64":
+        decoded = bytes.decode(base64.b64decode(received["encoded"]))
+    elif received["type"] == "bigint":
+        decoded = bytearray.fromhex(received["encoded"][2:]).decode()
+    elif received["type"] == "rot13":
+        decoded = codecs.decode(received["encoded"], 'rot13')
+    elif received["type"] == "hex":
+        decoded = bytearray.fromhex(received["encoded"]).decode()
+    elif received["type"] == "utf-8":
+        decoded = bytes.decode(bytes("".join([chr(i) for i in received["encoded"]]), 'UTF-8'))
+    
+    
+    text_to_send = { "decoded": decoded}    
+    
+    json_send(text_to_send)
 
-    encodedJson = json.JSONEncoder().encode({"decoded": str(encoded)})
-    print(encodedJson)
-    soc.sendall(bytes(encodedJson, "UTF-8"))
+print(received["flag"])
