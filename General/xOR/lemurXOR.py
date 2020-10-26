@@ -1,5 +1,5 @@
 #see open cv lib documentation for beterr examples
-#alse see geeksforkeeks.org 
+#alse see geeksforkeeks.org some good information there 
 
 import cv2 # pip upgrade then pip install opencv
 

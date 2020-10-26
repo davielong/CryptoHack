@@ -1,0 +1,11 @@
+I've hidden two cool images by XOR with the same secret key so you can't see them!
+
+lemur.png
+
+flag.png
+to resolve this problem we need to convert the images to their hex RGB values and then 
+xor the results together and outputting the image to the screen
+
+see opencv 
+
+https://docs.opencv.org/master/modules.html
