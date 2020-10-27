@@ -6,6 +6,6 @@ flag.png
 to resolve this problem we need to convert the images to their hex RGB values and then 
 xor the results together and outputting the image to the screen
 
-see opencv 
+see opencv for documentation on the lib used 
 
 https://docs.opencv.org/master/modules.html
